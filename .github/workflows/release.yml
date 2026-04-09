@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          xcodebuild \
+            -project MeetingReminder.xcodeproj \
+            -scheme MeetingReminder \
+            -configuration Debug \
+            test
+
+      - name: Build release
+        run: |
+          xcodebuild \
+            -project MeetingReminder.xcodeproj \
+            -scheme MeetingReminder \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Package app
+        run: |
+          cd build/Build/Products/Release
+          zip -r "$GITHUB_WORKSPACE/MeetingReminder.zip" MeetingReminder.app
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: MeetingReminder.zip
+          generate_release_notes: true
