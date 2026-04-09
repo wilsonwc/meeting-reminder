@@ -114,6 +114,36 @@ final class VideoLinkDetectorTests: XCTestCase {
         XCTAssertEqual(VideoLinkDetector.serviceName(for: url), "Slack")
     }
 
+    // MARK: - nativeAppURL(for:)
+
+    func testNativeAppURLConvertsZoom() {
+        let url = URL(string: "https://us04web.zoom.us/j/123456789")!
+        let native = VideoLinkDetector.nativeAppURL(for: url)
+        XCTAssertEqual(native.scheme, "zoommtg")
+        XCTAssertTrue(native.absoluteString.contains("confno=123456789"))
+    }
+
+    func testNativeAppURLConvertsZoomWithPassword() {
+        let url = URL(string: "https://zoom.us/j/123456789?pwd=secret123")!
+        let native = VideoLinkDetector.nativeAppURL(for: url)
+        XCTAssertEqual(native.scheme, "zoommtg")
+        XCTAssertTrue(native.absoluteString.contains("confno=123456789"))
+        XCTAssertTrue(native.absoluteString.contains("pwd=secret123"))
+    }
+
+    func testNativeAppURLConvertsTeams() {
+        let url = URL(string: "https://teams.microsoft.com/l/meetup-join/abc123")!
+        let native = VideoLinkDetector.nativeAppURL(for: url)
+        XCTAssertEqual(native.scheme, "msteams")
+        XCTAssertTrue(native.absoluteString.contains("meetup-join"))
+    }
+
+    func testNativeAppURLPassesThroughUnknown() {
+        let url = URL(string: "https://meet.google.com/abc-defg-hij")!
+        let native = VideoLinkDetector.nativeAppURL(for: url)
+        XCTAssertEqual(native, url)
+    }
+
     func testServiceNameUnknownReturnsMeeting() {
         let url = URL(string: "https://example.com/call")!
         XCTAssertEqual(VideoLinkDetector.serviceName(for: url), "Meeting")
