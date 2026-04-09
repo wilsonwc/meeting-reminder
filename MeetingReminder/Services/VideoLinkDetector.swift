@@ -1,3 +1,4 @@
+import AppKit
 import EventKit
 import Foundation
 
@@ -59,6 +60,59 @@ struct VideoLinkDetector {
         }
 
         return nil
+    }
+
+    /// Convert an HTTPS meeting URL to the native app URL scheme so the
+    /// meeting app opens directly instead of going through the browser.
+    static func nativeAppURL(for url: URL) -> URL {
+        let host = url.host?.lowercased() ?? ""
+        let absString = url.absoluteString
+
+        // Zoom: https://zoom.us/j/123?pwd=abc → zoommtg://zoom.us/join?confno=123&pwd=abc
+        if host.contains("zoom.us"), absString.contains("/j/") {
+            var components = URLComponents()
+            components.scheme = "zoommtg"
+            components.host = host
+            components.path = "/join"
+
+            let pathParts = url.pathComponents
+            if let jIndex = pathParts.firstIndex(of: "j"),
+               jIndex + 1 < pathParts.count {
+                let confno = pathParts[jIndex + 1]
+                var queryItems = [URLQueryItem(name: "confno", value: confno)]
+                // Preserve password and other query params
+                if let existing = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
+                    queryItems.append(contentsOf: existing)
+                }
+                components.queryItems = queryItems
+            }
+
+            if let native = components.url { return native }
+        }
+
+        // Teams: https://teams.microsoft.com/l/meetup-join/... → msteams://...
+        if host.contains("teams.microsoft.com") {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            components?.scheme = "msteams"
+            if let native = components?.url { return native }
+        }
+
+        return url
+    }
+
+    /// Open a meeting URL, preferring the native app scheme with browser fallback.
+    static func openMeetingURL(_ url: URL) {
+        let native = nativeAppURL(for: url)
+        if native != url {
+            let config = NSWorkspace.OpenConfiguration()
+            NSWorkspace.shared.open(native, configuration: config) { _, error in
+                if error != nil {
+                    NSWorkspace.shared.open(url)
+                }
+            }
+        } else {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     static func serviceName(for url: URL) -> String {
