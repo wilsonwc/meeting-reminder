@@ -156,7 +156,7 @@ private struct PreferencesButton: View {
 
 @available(macOS 14.0, *)
 private struct PreferencesButton14: View {
-    @Environment(\.openSettings) private var openSettings
+    @Environment(\.openSettings) private var openSettings: OpenSettingsAction
     var onDismiss: () -> Void
 
     var body: some View {
