@@ -44,12 +44,19 @@ Inspired by <a href="https://www.inyourface.app">In Your Face</a>.
 ## Requirements
 
 - macOS 13 Ventura or later
-- Xcode 15+ (to build)
 - Calendar access permission
 
 ## Installation
 
-### Build from Source
+### Homebrew
+
+```bash
+brew install --cask wilsonwc/tap/meeting-reminder
+```
+
+> **Note:** The app is not notarized. On first launch, right-click the app and select **Open**, then confirm the dialog. After that it opens normally.
+
+### Build from source
 
 ```bash
 git clone https://github.com/wilsonwc/meeting-reminder.git
