@@ -20,7 +20,7 @@ Inspired by <a href="https://www.inyourface.app">In Your Face</a>.
 
 - **Full-screen overlay** — appears on all screens at a configurable time before meetings (1 / 2 / 5 / 10 min)
 - **Video link detection** — automatically finds Zoom, Google Meet, Microsoft Teams, Webex, and Slack Huddle links in event notes, URL, or location
-- **One-click join** — press the Join button or hit Enter to open the meeting link
+- **One-click join** — press the Join button or hit Enter to open the meeting directly in the native app (Zoom, Teams) with browser fallback
 - **Snooze & dismiss** — snooze for 1 minute or dismiss with Escape
 - **Menu bar app** — lives in the menu bar with no Dock icon; shows upcoming meetings at a glance
 - **Multiple calendars** — works with iCloud, Google, Exchange, and any calendar synced to macOS; choose which calendars to monitor
@@ -52,7 +52,7 @@ Inspired by <a href="https://www.inyourface.app">In Your Face</a>.
 ### Build from Source
 
 ```bash
-git clone https://github.com/your-username/meeting-reminder.git
+git clone https://github.com/wilsonwc/meeting-reminder.git
 cd meeting-reminder
 open MeetingReminder.xcodeproj
 ```
