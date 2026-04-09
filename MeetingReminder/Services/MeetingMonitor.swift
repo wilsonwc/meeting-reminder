@@ -25,8 +25,9 @@ final class MeetingMonitor: ObservableObject {
     func start() {
         checkTimer?.invalidate()
         checkTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.checkUpcomingMeetings()
+                self.checkUpcomingMeetings()
             }
         }
         // Also check immediately

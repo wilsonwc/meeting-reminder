@@ -111,8 +111,9 @@ final class CalendarService: ObservableObject {
     private func startAutoRefresh() {
         refreshTimer?.invalidate()
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.fetchEvents()
+                self.fetchEvents()
             }
         }
     }
@@ -123,8 +124,9 @@ final class CalendarService: ObservableObject {
             object: eventStore,
             queue: .main
         ) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.fetchEvents()
+                self.fetchEvents()
             }
         }
     }
