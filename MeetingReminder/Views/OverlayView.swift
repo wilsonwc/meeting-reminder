@@ -74,7 +74,7 @@ struct OverlayView: View {
 
 
                     if !requireAction {
-                        Button(action: onSnooze) {
+                        Button(action: { onSnooze(snoozeOptions.first ?? 1) }) {
                             HStack(spacing: 8) {
                                 Image(systemName: "clock.arrow.circlepath")
                                 Text("Snooze 1 min")
