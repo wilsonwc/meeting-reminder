@@ -5,8 +5,6 @@ before:
   hooks:
     - bash scripts/bump-version.sh {{ trimprefix .Tag "v" }}
     - make installer VERSION={{ trimprefix .Tag "v" }}
-    - mkdir -p dist
-    - cp MeetingReminder-{{ trimprefix .Tag "v" }}.dmg dist/
 
 builds:
   - skip: true
@@ -16,7 +14,7 @@ release:
     owner: nilBora
     name: meeting-reminder
   extra_files:
-    - glob: "dist/MeetingReminder-*.dmg"
+    - glob: "MeetingReminder-*.dmg"
   draft: false
   prerelease: auto
 
