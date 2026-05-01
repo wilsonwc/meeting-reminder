@@ -56,6 +56,12 @@ brew tap nilBora/apps
 brew install --cask meeting-reminder
 ```
 
+or
+
+```bash
+brew install nilBora/apps/meeting-reminder
+```
+
 > The app is unsigned. The cask automatically removes the quarantine attribute after install so Gatekeeper will not block it.
 
 ### Build from Source

@@ -21,6 +21,7 @@ build:
 
 # DMG з drag-to-Applications вікном
 installer: build
+	codesign --force --sign - --deep "$(APP_PATH)"
 	rm -f "$(DMG_NAME)"
 	create-dmg \
 		--volname "$(APP)" \
